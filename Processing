@@ -1,0 +1,29 @@
+import processing.serial.*;
+Serial port;
+float brightness = 0;
+
+
+
+void setup() {
+  size(2000, 1200);
+  port = new Serial(this, "COM3", 9600);
+  port.bufferUntil('\n');
+}
+
+void draw() {
+  background(0);
+  stroke(190, brightness, 200);
+  strokeWeight(5);
+  noFill();
+  for (int i = 0; i<400; i=i+8) {
+    float r = 300+50*sin(millis()/200.0+brightness*i);
+    float x = width/2 + r*sin(radians(i));
+    float y = height/2 + r*cos(radians(i));
+    line(width/2, height/2, x, y);
+  }
+}
+
+void serialEvent(Serial port)
+{
+  brightness = float(port.readStringUntil('\n'));
+}
